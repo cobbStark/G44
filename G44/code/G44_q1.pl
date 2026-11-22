@@ -48,3 +48,15 @@ main :-
            forall(between(1, 8, N), clue(N, S)) )),
     forall(member(p(Name, Dept, Lang, Proj), S),
            format("~w = [~w, ~w, ~w]~n", [Name, Dept, Lang, Proj])).
+
+%BLOCK 5
+
+% count_solutions(+Active, -N): N is the number of solutions S of solution/1
+% that satisfy every clue whose number is listed in Active, ignoring all
+% other clues.
+count_solutions(Active, N) :-
+    findall(S,
+            ( solution(S),
+              forall(member(C, Active), clue(C, S)) ),
+            Solutions),
+    length(Solutions, N).
