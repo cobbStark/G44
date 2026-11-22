@@ -114,3 +114,27 @@ right_operand(Tree, ParentPrec) -->
     ->  "(", tree_dcg(Tree), ")"
     ;   tree_dcg(Tree)
     ).
+
+% equation(+List, -Equation)
+% Declarative reading: Equation is the canonical string "L=R" where, for
+% some split of List into non-empty parts Left and Right, L is an
+% expression tree over Left, R is an expression tree over Right, and both
+% trees have the same integer value.
+% On backtracking it gives every valid equation (one per pair of trees).
+% Fails for lists of length 0 or 1, since split_list/3 has no split then.
+equation(List, Equation) :-
+    split_list(List, LeftNums, RightNums),
+    expr(LeftNums, LeftTree, Value),
+    expr(RightNums, RightTree, RightValue),
+    Value =:= RightValue,
+    tree_codes(LeftTree, LeftCodes),
+    tree_codes(RightTree, RightCodes),
+    append(LeftCodes, [0'=|RightCodes], Codes),
+    string_codes(Equation, Codes).
+
+% generate_equation(+List, ?Equation)  -- P2.a
+% Declarative reading: Equation is one valid equation for List.
+% once/1 keeps only the first answer. If there is none (including lists
+% of length 0 or 1) it simply fails: it does not loop or raise an error.
+generate_equation(List, Equation) :-
+    once(equation(List, Equation)).
