@@ -59,4 +59,4 @@ count_solutions(Active, N) :-
             ( solution(S),
               forall(member(C, Active), clue(C, S)) ),
             Solutions),
-    length(Solutions, N).
+    length(Solutions, N).   
