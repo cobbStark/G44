@@ -19,3 +19,15 @@
         ((and (null? (cadr tree)) (null? (caddr tree))) 1)
         (else (+ (leaf-count (cadr tree))
                  (leaf-count (caddr tree))))))
+
+;; Recursive reading:
+;;   (my-append '() b)         = b
+;;   (my-append (x . rest) b)  = (cons x (my-append rest b))
+(define (my-append a b)
+  (if (null? a)
+      b
+      (cons (car a) (my-append (cdr a) b))))
+
+(display (my-append '(1 2) '(3 4))) (newline)
+(display (my-append '() '(3))) (newline)
+(display (my-append '(1) '())) (newline)
