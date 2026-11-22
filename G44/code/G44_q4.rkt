@@ -42,3 +42,9 @@
                     (cons x walked)
                     walked)))))
     walk))
+
+;; Recursive reading:
+;;   insert-if-short returns (make-inserter x (lambda (length) (< length n)))
+;;   so every list whose original length is less than n gets x at its front.
+(define (insert-if-short x lst n)
+  ((make-inserter x (lambda (length) (< length n))) lst))
