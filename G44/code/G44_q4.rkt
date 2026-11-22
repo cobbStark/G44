@@ -23,3 +23,22 @@
               (restore (cdr items) (cons (car items) result))))
         (collect (cdr remaining)
                  (cons (proc (car remaining)) reversed)))))
+
+;; Recursive reading:
+;;   (make-inserter x len-ok?) returns a function that recursively transforms
+;;   a list, inserting x at the front when len-ok? accepts its original length.
+(define (make-inserter x len-ok?)
+  (letrec ((walk
+            (lambda (lst)
+              (let* ((original-length (my-length lst))
+                     (walked
+                      (my-map
+                       (lambda (element)
+                         (if (or (null? element) (pair? element))
+                             (walk element)
+                             element))
+                       lst)))
+                (if (len-ok? original-length)
+                    (cons x walked)
+                    walked)))))
+    walk))
