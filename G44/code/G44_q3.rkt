@@ -61,3 +61,10 @@
                  (my-append (postorder (caddr tree))
                             (list (car tree))))))
 
+;; Recursive reading (not itself recursive; it delegates to inorder):
+;;   (print-inorder tree) = display the list (inorder tree), then a newline.
+;;   For the empty tree, (inorder '()) is '(), which display prints as ().
+(define (print-inorder tree)
+  (display (inorder tree))
+  (newline))
+
