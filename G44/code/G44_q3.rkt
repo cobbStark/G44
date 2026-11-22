@@ -38,3 +38,14 @@
       (my-append (inorder (cadr tree))
                  (cons (car tree) (inorder (caddr tree))))))
 
+;; Recursive reading:
+;;   (preorder '())            = '()
+;;   (preorder (v left right)) = (cons v (my-append (preorder left)
+;;                                                  (preorder right)))
+(define (preorder tree)
+  (if (null? tree)
+      '()
+      (cons (car tree)
+            (my-append (preorder (cadr tree))
+                       (preorder (caddr tree))))))
+
