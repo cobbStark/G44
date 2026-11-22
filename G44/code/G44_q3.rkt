@@ -81,3 +81,11 @@
   (display (postorder tree))
   (newline))
 
+;; Recursive reading (not itself recursive; it delegates to height and leaf-count):
+;;   (print-height-and-leaves tree) = display the list (list (height tree) (leaf-count tree)),
+;;                                    then a newline.
+;;   For the empty tree this is (0 0).
+(define (print-height-and-leaves tree)
+  (display (list (height tree) (leaf-count tree)))
+  (newline))
+
