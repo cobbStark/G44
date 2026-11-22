@@ -49,3 +49,15 @@
             (my-append (preorder (cadr tree))
                        (preorder (caddr tree))))))
 
+;; Recursive reading:
+;;   (postorder '())            = '()
+;;   (postorder (v left right)) = (my-append (postorder left)
+;;                                           (my-append (postorder right)
+;;                                                      (list v)))
+(define (postorder tree)
+  (if (null? tree)
+      '()
+      (my-append (postorder (cadr tree))
+                 (my-append (postorder (caddr tree))
+                            (list (car tree))))))
+
