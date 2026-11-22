@@ -28,6 +28,13 @@
       b
       (cons (car a) (my-append (cdr a) b))))
 
-(display (my-append '(1 2) '(3 4))) (newline)
-(display (my-append '() '(3))) (newline)
-(display (my-append '(1) '())) (newline)
+;; Recursive reading:
+;;   (inorder '())            = '()
+;;   (inorder (v left right)) = (my-append (inorder left)
+;;                                         (cons v (inorder right)))
+(define (inorder tree)
+  (if (null? tree)
+      '()
+      (my-append (inorder (cadr tree))
+                 (cons (car tree) (inorder (caddr tree))))))
+
