@@ -37,3 +37,14 @@ clue(7, S) :- member(p('Dana', Dept, Lang, _), S), Lang \= java, ( Dept = resear
 
 % clue 8: the data-project friend works in research and does not use JavaScript.
 clue(8, S) :- member(p(_, research, Lang, data), S), Lang \= javascript.
+
+%BLOCK 4
+
+% main: finds one solution S from solution/1 that satisfies clue(N, S) for
+% every N from 1 to 8, then prints one line per friend (Alex, Ben, Carla,
+% Dana) in the form: Name = [Dept, Lang, Project].
+main :-
+    once(( solution(S),
+           forall(between(1, 8, N), clue(N, S)) )),
+    forall(member(p(Name, Dept, Lang, Proj), S),
+           format("~w = [~w, ~w, ~w]~n", [Name, Dept, Lang, Proj])).
