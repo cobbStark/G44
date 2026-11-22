@@ -38,6 +38,9 @@ clue(7, S) :- member(p('Dana', Dept, Lang, _), S), Lang \= java, ( Dept = resear
 % clue 8: the data-project friend works in research and does not use JavaScript.
 clue(8, S) :- member(p(_, research, Lang, data), S), Lang \= javascript.
 
+% CLUE 9: The friend who prefers the embedded project works in the design department.
+clue(9, S) :- member(p(_, design, _, embedded), S).
+
 %BLOCK 4
 
 % main: finds one solution S from solution/1 that satisfies clue(N, S) for
@@ -60,3 +63,7 @@ count_solutions(Active, N) :-
               forall(member(C, Active), clue(C, S)) ),
             Solutions),
     length(Solutions, N).   
+
+
+
+
