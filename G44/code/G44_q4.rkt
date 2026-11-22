@@ -48,3 +48,13 @@
 ;;   so every list whose original length is less than n gets x at its front.
 (define (insert-if-short x lst n)
   ((make-inserter x (lambda (length) (< length n))) lst))
+
+;; Recursive reading:
+;;   (print-insert-result) reads x, lst, and n in that order, then displays
+;;   (insert-if-short x lst n) followed by a newline.
+(define (print-insert-result)
+  (let* ((x (read))
+         (lst (read))
+         (n (read)))
+    (display (insert-if-short x lst n))
+    (newline)))
