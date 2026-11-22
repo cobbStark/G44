@@ -138,3 +138,19 @@ equation(List, Equation) :-
 % of length 0 or 1) it simply fails: it does not loop or raise an error.
 generate_equation(List, Equation) :-
     once(equation(List, Equation)).
+
+% all_equations(+List, -Equations)  -- P2.b
+% Declarative reading: Equations is the list of all valid equations for
+% List, in standard order of terms, with no duplicates.
+% findall/3 collects every answer of equation/2 (giving [] when there is
+% none), and sort/2 both orders the strings and removes duplicates.
+all_equations(List, Equations) :-
+    findall(Equation, equation(List, Equation), All),
+    sort(All, Equations).
+
+% count_equations(+List, -N)  -- P2.b
+% Declarative reading: N is the number of valid equations for List, that
+% is, the length of the list given by all_equations/2.
+count_equations(List, N) :-
+    all_equations(List, Equations),
+    length(Equations, N).
