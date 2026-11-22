@@ -68,3 +68,16 @@
   (display (inorder tree))
   (newline))
 
+;; Recursive reading (not itself recursive; it delegates to the traversals):
+;;   (print-all-traversals tree) = display (inorder tree), newline,
+;;                                 display (preorder tree), newline,
+;;                                 display (postorder tree), newline.
+;;   For the empty tree each traversal is '(), which display prints as ().
+(define (print-all-traversals tree)
+  (display (inorder tree))
+  (newline)
+  (display (preorder tree))
+  (newline)
+  (display (postorder tree))
+  (newline))
+
