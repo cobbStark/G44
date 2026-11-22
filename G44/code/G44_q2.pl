@@ -51,3 +51,66 @@ apply_op(LT, LV, RT, RV, LT/RT, V) :-
     RV =\= 0,
     LV mod RV =:= 0,
     V is LV // RV.
+
+% op_prec(?Op, ?Prec)
+% Declarative reading: Prec is the precedence of operator Op. A larger
+% number binds tighter, so * and / bind tighter than + and -.
+op_prec(+, 1).
+op_prec(-, 1).
+op_prec(*, 2).
+op_prec(/, 2).
+
+% tree_prec(+Tree, -Prec)
+% Declarative reading: Prec is the precedence of the top operator of Tree.
+% A single number gets precedence 3, higher than every operator, so it is
+% never put in parentheses.
+tree_prec(N, 3) :-
+    integer(N).
+tree_prec(Tree, Prec) :-
+    compound(Tree),
+    Tree =.. [Op, _, _],
+    op_prec(Op, Prec).
+
+% tree_codes(+Tree, -Codes)
+% Declarative reading: Codes is the code list of Tree written in the
+% canonical form, with no spaces. Nothing is printed; the caller turns
+% Codes into a string.
+tree_codes(Tree, Codes) :-
+    phrase(tree_dcg(Tree), Codes).
+
+% tree_dcg(+Tree)//
+% Recursive reading: a number is written in decimal; a node L Op R is
+% written as its left operand, the operator symbol, then its right operand,
+% each one put in parentheses as the canonical rule says.
+tree_dcg(N) -->
+    { integer(N) },
+    { number_codes(N, Digits) },
+    Digits.
+tree_dcg(Tree) -->
+    { compound(Tree),
+      Tree =.. [Op, L, R],
+      op_prec(Op, Prec),
+      atom_codes(Op, OpCodes) },
+    left_operand(L, Prec),
+    OpCodes,
+    right_operand(R, Prec).
+
+% left_operand(+Tree, +ParentPrec)//
+% A left operand is in parentheses only if its precedence is LOWER than
+% its parent's (operators are left-associative).
+left_operand(Tree, ParentPrec) -->
+    { tree_prec(Tree, Prec) },
+    (   { Prec < ParentPrec }
+    ->  "(", tree_dcg(Tree), ")"
+    ;   tree_dcg(Tree)
+    ).
+
+% right_operand(+Tree, +ParentPrec)//
+% A right operand is in parentheses if its precedence is the SAME as or
+% LOWER than its parent's.
+right_operand(Tree, ParentPrec) -->
+    { tree_prec(Tree, Prec) },
+    (   { Prec =< ParentPrec }
+    ->  "(", tree_dcg(Tree), ")"
+    ;   tree_dcg(Tree)
+    ).
