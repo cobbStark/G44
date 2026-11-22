@@ -23,3 +23,17 @@ clue(3, S) :- member(p(_, testing, python, _), S).
 
 % clue 4: Ben prefers web and is not in testing.
 clue(4, S) :- member(p('Ben', Dept, _, web), S), Dept \= testing.
+
+%BLOCK 3
+
+% clue 5: the Java friend works in the design department.
+clue(5, S) :- member(p(_, design, java, _), S).
+
+% clue 6: Carla's project is not embedded and her department is not development.
+clue(6, S) :- member(p('Carla', Dept, _, Proj), S), Proj \= embedded, Dept \= development.
+
+% clue 7: Dana's language is not Java, and she works in research or testing.
+clue(7, S) :- member(p('Dana', Dept, Lang, _), S), Lang \= java, ( Dept = research ; Dept = testing ).
+
+% clue 8: the data-project friend works in research and does not use JavaScript.
+clue(8, S) :- member(p(_, research, Lang, data), S), Lang \= javascript.
